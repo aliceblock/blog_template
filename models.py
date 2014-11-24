@@ -1,19 +1,29 @@
 from django.db import models
-
-# Create your models here.
 from django.template.defaultfilters import slugify
 from unidecode import unidecode
-
 
 class PublishedEntryManager(models.Manager):
     def get_queryset(self):
         return super(PublishedEntryManager, self).get_queryset().filter(is_published=True)
 
 class Entry(models.Model):
+    MANGA = 'MNG'
+    DAILY = 'DLY'
+    PROGRAM = 'PRG'
+    CATEGORIES = (
+        (DAILY, 'Daily'),
+        (MANGA, 'Manga'),
+        (PROGRAM, 'Program'),
+    )
+
     title = models.CharField(max_length=200)
     content = models.TextField()
     slug = models.SlugField(unique=True)
-    is_published = models.BooleanField(default=False, verbose_name="Publish?")
+    category = models.Field(max_length=3,
+                            choices=CATEGORIES,
+                            default=DAILY)
+    is_published = models.BooleanField(default=False,
+                                       verbose_name="Publish?")
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     objects = models.Manager()

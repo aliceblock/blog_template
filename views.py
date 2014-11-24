@@ -1,6 +1,15 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from blog.models import Entry
+import os
 
 # Create your views here.
 def home(request):
-    return HttpResponse('<h1>Welcome to my blog</h1><br/><p>aliceblock</p>')
+    posts = Entry.published.all()
+    return render(request, 'blog/base.html', {'posts':posts})
+
+def handle_uploaded_file(f):
+    path = 'blog/uploads/' + str(f)
+    with open(path, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+    os.chmod(path,0777)
