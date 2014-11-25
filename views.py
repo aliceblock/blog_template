@@ -1,11 +1,45 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from blog.models import Entry
+from blog.forms import CommentForm
 import os
 
 # Create your views here.
 def home(request):
-    posts = Entry.published.all()
-    return render(request, 'blog/base.html', {'posts':posts})
+    post_list = Entry.published.all()
+    paginator = Paginator(post_list,3)
+
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        posts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        posts = paginator.page(paginator.num_pages)
+    return render(request, 'blog/base.html', {'posts':posts, 'page':'home'})
+
+
+def entry(request,year,month,day,slug):
+    post = get_object_or_404(Entry,
+                               created_on__year=year,
+                               created_on__month=month,
+                               created_on__day=day,
+                               slug=slug)
+    form = CommentForm(request.POST or None)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.entry = post
+        comment.save()
+        request.session["name"] = comment.name
+        request.session["email"] = comment.email
+        request.session["website"] = comment.website
+        return redirect(request.path)
+    form.initial['name'] = request.session.get('name')
+    form.initial['email'] = request.session.get('email')
+    form.initial['website'] = request.session.get('website')
+    return render(request, 'blog/entry.html', {'post': post, 'form': form})
 
 def handle_uploaded_file(f):
     path = 'blog/uploads/' + str(f)

@@ -19,7 +19,7 @@ class Entry(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
     slug = models.SlugField(unique=True)
-    category = models.Field(max_length=3,
+    category = models.CharField(max_length=3,
                             choices=CATEGORIES,
                             default=DAILY)
     is_published = models.BooleanField(default=False,
@@ -29,12 +29,15 @@ class Entry(models.Model):
     objects = models.Manager()
     published = PublishedEntryManager()
 
+    class Meta:
+        ordering = ['-created_on']
+
     def __unicode__(self):
         return self.title
 
     @models.permalink
     def get_absolute_url(self):
-        return ('entry_detail', (),
+        return ('blog_entry', (),
                 {
                     'year':self.created_on.year,
                     'month':self.created_on.month,

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+{% load blog_tags %}
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -22,12 +23,9 @@
     <div class="blog-masthead hidden-xs">
         <div class="container">
             <nav class="blog-nav">
-                <!--a class="blog-nav-item {% if request.GET.page == '1' or not request.GET.page %}active{% endif %}" href="?page=1">Home</a>
-                <a class="blog-nav-item {% ifequal request.GET.page '2' %}active{% endifequal %}" href="?page=2">Archives</a>
-                <a class="blog-nav-item {% ifequal request.GET.page '3' %}active{% endifequal %}" href="?page=3">About</a-->
-                <a class="blog-nav-item active" href="#">Home</a>
-                <a class="blog-nav-item" href="#">Programing</a>
+                <a class="blog-nav-item {% if page == 'home'%}active{% endif %}" href="{% url 'blog_home'%}">Home</a>
                 <a class="blog-nav-item" href="#">Manga</a>
+                <a class="blog-nav-item" href="#">Programing</a>
                 <a class="blog-nav-item" href="#">Archives</a>
                 <a class="blog-nav-item" href="#">About</a>
             </nav>
@@ -65,6 +63,17 @@
             <div class="col-sm-8 blog-main">
                 <div class="blog-post">
                     {% block content %}
+                    {% for post in posts %}
+                    <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+                    <i> Created on {{ post.created_on }}</i><br/>
+                    {{ post.content|safe|more }}
+                    {% if post.content|safe|more|length != post.content|safe|length %}
+                    . . .<br/>
+                    <a href="{{ post.get_absolute_url }}">>> Read more <<</a>
+                    {% endif %}
+                    <br/><br/>{{ post.comment_set.all|length }} comment{{ post.comment_set.all|pluralize }}
+                    <hr/>
+                    {% endfor %}
                     {% endblock %}
                 </div><!-- /.blog-post -->
             </div><!-- /.blog-main -->
