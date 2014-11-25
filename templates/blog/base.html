@@ -23,17 +23,17 @@
     <div class="blog-masthead hidden-xs">
         <div class="container">
             <nav class="blog-nav">
-                <a class="blog-nav-item {% if page == 'home'%}active{% endif %}" href="{% url 'blog_home'%}">Home</a>
-                <a class="blog-nav-item" href="#">Manga</a>
-                <a class="blog-nav-item" href="#">Programing</a>
-                <a class="blog-nav-item" href="#">Archives</a>
-                <a class="blog-nav-item" href="#">About</a>
+                <a class="blog-nav-item {% if category == None %}active{% endif %}" href="{% url 'blog_home'%}">Home</a>
+                <a class="blog-nav-item {% if category == 'MNG' %}active{% endif %}" href="{% url 'blog_home'%}?cat=MNG">Manga</a>
+                <a class="blog-nav-item {% if category == 'PRG' %}active{% endif %}" href="{% url 'blog_home'%}?cat=PRG">Programming</a>
+                <a class="blog-nav-item {% if category == 'archive' %}active{% endif %}" href="{% url 'blog_home'%}?cat=archive">Archives</a>
+                <a class="blog-nav-item {% if category == 'about' %}active{% endif %}" href="{% url 'blog_home'%}?cat=about">About</a>
             </nav>
         </div>
     </div>
     <div class="container" style="background-color: white">
         <a href="{% url 'blog_home' %}" style="text-decoration: none;">
-            <div class="blog-header">
+            <div class="blog-header" style="padding:0 30px 100px">
                 <h1 class="blog-title">Alternative Alice</h1>
                 <p class="lead blog-description">Next Generation Manga Reading.</p>
             </div>
@@ -42,21 +42,16 @@
             <div class="col-sm-3 blog-sidebar">
                 <div class="sidebar-module sidebar-module-inset">
                     <h4>About</h4>
-                    <p>Japanese Manga translation site.</p>
+                    <ul>
+                        <li>Japanese Manga translation</li>
+                        <li>Programming trick</li>
+                    </ul>
                 </div>
-                <h4>Manga Test:</h4>
-                <select name="forma" onchange="value=this.options[this.selectedIndex].value;if(value != '') location = value">
-                    <option value="">-- Please select Manga --</option>
-                    <option value="http://www.google.com">Manga 1</option>
-                    <option value="http://www.twitter.com">Manga 2</option>
-                    <option value="http://www.facebook.com">Manga 3</option>
-                </select>
-                <div class="sidebar-module">
+                <div class="sidebar-module" style="margin:5px">
                     <h4>Links</h4>
                     <ol class="list-unstyled">
-                        <li><a href="http://github.com">GitHub</a></li>
-                        <li><a href="http://twitter.com">Twitter</a></li>
-                        <li><a href="http://facebook.com">Facebook</a></li>
+                        <li><a href="http://alternative-alice.blogspot.com">Alternative-alice (Blogspot)</a></li>
+                        <li><a href="http://blackhole-alice.blogspot.com">Blackhole-alice</a></li>
                     </ol>
                 </div>
             </div> <!-- /.blog-sidebar -->
@@ -78,6 +73,26 @@
                 </div><!-- /.blog-post -->
             </div><!-- /.blog-main -->
         </div> <!-- /.row -->
+
+        <div class="row">
+            <div class="pagination" style="display:table; margin:0 auto">
+                <span class="step-links">
+                    {% if posts.has_previous %}
+                        <a href="?{% if category != None %}cat={{ category }}&{% endif %}page={{ posts.previous_page_number }}"
+                                class="btn btn-default" style="margin-right:10px">previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+                    </span>
+
+                    {% if posts.has_next %}
+                        <a href="?{% if category != None %}cat={{ category }}&{% endif %}page={{ posts.next_page_number }}"
+                                class="btn btn-default" style="margin-left:10px">next</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
 
         <div class="blog-footer">
             <p>Blog template built for <a href="http://getbootstrap.com">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>

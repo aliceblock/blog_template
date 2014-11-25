@@ -6,7 +6,11 @@ import os
 
 # Create your views here.
 def home(request):
-    post_list = Entry.published.all()
+    category = request.GET.get('cat')
+    if category is None or category not in [item[0] for item in Entry.CATEGORIES]:
+        post_list = Entry.published.all()
+    else:
+        post_list = Entry.published.filter(category=category)
     paginator = Paginator(post_list,3)
 
     page = request.GET.get('page')
@@ -18,7 +22,7 @@ def home(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         posts = paginator.page(paginator.num_pages)
-    return render(request, 'blog/base.html', {'posts':posts, 'page':'home'})
+    return render(request, 'blog/base.html', {'posts':posts, 'category':category})
 
 
 def entry(request,year,month,day,slug):
