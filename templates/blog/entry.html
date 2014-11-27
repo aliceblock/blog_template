@@ -26,8 +26,8 @@
 
 <form action="" method="POST">
     {% csrf_token %}
-    <table class="comment">
-        {{ form.as_table }}
+    <table>
+        {{ form }}
     </table>
     <input type="submit" name="submit" value="Submit" />
 </form>

@@ -74,7 +74,10 @@
                     {% endif %}
                     <br/><br/>{{ post.comment_set.all|length }} comment{{ post.comment_set.all|pluralize }}
                     <hr/>
+                    {% empty %}
+                    <h1 align="center">No Content Available.</h1>
                     {% endfor %}
+                    {% if posts %}
                     <div class="pagination" style="display:table; margin:0 auto">
                         <span class="step-links">
                             {% if posts.has_previous %}
@@ -92,6 +95,7 @@
                             {% endif %}
                         </span>
                     </div>
+                    {% endif %}
                     {% endblock %}
                 </div><!-- /.blog-post -->
             </div><!-- /.blog-main -->
