@@ -20,7 +20,7 @@
             <a href="{{ comment.website }}">{{ comment.name }}</a> said on {{ comment.created_on }}
         </span>
         <p>
-            {{ comment.text }}
+            {{ comment.text|linebreaks }}
         </p>
     {% endfor %}
 </div>
