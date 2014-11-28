@@ -30,7 +30,7 @@ class Entry(models.Model):
     published = PublishedEntryManager()
 
     class Meta:
-        ordering = ['-created_on']
+        ordering = ['-updated_on']
 
     def __unicode__(self):
         return self.title
