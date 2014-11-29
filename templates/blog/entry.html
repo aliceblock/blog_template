@@ -1,13 +1,10 @@
 {% extends 'blog/base.html' %}
-{% load staticfiles %}
-
-{% block extra_header %}
-{% endblock %}
 
 {% block title %}{{ post.title }}{% endblock %}
 {% block content %}
 <h2><a href="{% url 'blog_entry' post.created_on.year post.created_on.month post.created_on.day post.slug %}">{{ post.title }}</a></h2>
 <i> Created on {{ post.created_on }}</i><br/>
+<hr/>
 {{ post.content|safe }}
 
 {% if post.comment_set.all %}
@@ -26,6 +23,7 @@
 </div>
 {% endif %}
 <br/><br/>
+<hr/>
 <h4>Add Comment</h4>
 
 <form action="" method="POST">

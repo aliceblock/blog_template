@@ -1,0 +1,16 @@
+{% extends 'blog/base.html' %}
+{% load dictionary_manage %}
+
+{% block title %}Archives{% endblock %}
+{% block content %}
+<h2>Archive</h2>
+<hr/>
+{% for date in dates %}
+    <h4 style="color:red">{{ date }}</h4>
+    <ul>
+    {% for post in dates|access:date %}
+    <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% endfor %}
+{% endblock %}

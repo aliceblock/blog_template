@@ -24,7 +24,6 @@ def home(request):
         posts = paginator.page(paginator.num_pages)
     return render(request, 'blog/base.html', {'posts':posts, 'category':category})
 
-
 def entry(request,year,month,day,slug):
     post = get_object_or_404(Entry,
                                created_on__year=year,
@@ -44,6 +43,20 @@ def entry(request,year,month,day,slug):
     form.initial['email'] = request.session.get('email')
     form.initial['website'] = request.session.get('website')
     return render(request, 'blog/entry.html', {'post': post, 'form': form})
+
+
+def archive(request):
+    category = 'archive'
+    posts = Entry.published.all()
+    date_format = '%Y %B'
+    dates = {}
+    for post in posts:
+        d = format(post.updated_on, date_format)
+        if not dates.has_key(d):
+            dates[d] = [post]
+        else:
+            dates[d].append(post)
+    return render(request, 'blog/archive.html', {'dates': dates, 'category':category})
 
 def handle_uploaded_file(f):
     path = 'blog/uploads/' + str(f)
