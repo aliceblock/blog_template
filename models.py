@@ -1,19 +1,40 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from datetime import datetime
 from unidecode import unidecode
 
 class PublishedEntryManager(models.Manager):
     def get_queryset(self):
-        return super(PublishedEntryManager, self).get_queryset().filter(is_published=True)
+        return super(PublishedEntryManager, self).get_queryset().filter(publish_date__lte=datetime.now())
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
+    slug = models.SlugField(unique=True,blank=True)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('blog_tag', (), {'slug':self.slug})
+
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            # Newly created object, so set slug
+            if not self.slug:
+                self.slug = slugify(unidecode(unicode(self.name)))
+        super(Tag, self).save(*args, **kwargs)
 
 class Entry(models.Model):
     MANGA = 'MNG'
     DAILY = 'DLY'
     PROGRAM = 'PRG'
+    REVIEW = 'RVW'
     CATEGORIES = (
         (DAILY, 'Daily'),
         (MANGA, 'Manga'),
         (PROGRAM, 'Program'),
+        (REVIEW, 'Review'),
     )
 
     title = models.CharField(max_length=200)
@@ -22,15 +43,15 @@ class Entry(models.Model):
     category = models.CharField(max_length=3,
                             choices=CATEGORIES,
                             default=DAILY)
-    is_published = models.BooleanField(default=False,
-                                       verbose_name="Publish?")
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
+    tags = models.ManyToManyField(Tag)
+    publish_date = models.DateTimeField(verbose_name='date published')
+    created_on = models.DateTimeField(auto_now_add=True, verbose_name='created on')
+    updated_on = models.DateTimeField(auto_now=True, verbose_name='last updated')
     objects = models.Manager()
     published = PublishedEntryManager()
 
     class Meta:
-        ordering = ['-updated_on']
+        ordering = ['-publish_date', '-updated_on', 'title']
 
     def __unicode__(self):
         return self.title
@@ -39,21 +60,28 @@ class Entry(models.Model):
     def get_absolute_url(self):
         return ('blog_entry', (),
                 {
-                    'year':self.created_on.year,
-                    'month':self.created_on.month,
-                    'day':self.created_on.day,
+                    'year':self.publish_date.year,
+                    'month':self.publish_date.month,
+                    'day':self.publish_date.day,
                     'slug':self.slug,
                 })
 
+    def is_published(self):
+        now = datetime.now()
+        return self.publish_date <= now
+    is_published.admin_order_field = 'publish_date'
+    is_published.boolean = True
+    is_published.short_description = 'Published recently?'
+
     def get_next_entry(self):
         try:
-            return self.get_next_by_create_date()
+            return self.get_next_by_publish_date()
         except:
             return False
 
     def get_previous_entry(self):
         try:
-            return self.get_previous_by_create_date()
+            return self.get_previous_by_publish_date()
         except:
             return False
 
@@ -61,7 +89,6 @@ class Entry(models.Model):
         if not self.id:
             # Newly created object, so set slug
             self.slug = slugify(unidecode(unicode(self.title)))
-
         super(Entry, self).save(*args, **kwargs)
 
 class Comment(models.Model):

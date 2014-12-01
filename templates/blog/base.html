@@ -31,6 +31,7 @@
         <div class="container">
             <nav class="blog-nav">
                 <a class="blog-nav-item {% if category == None %}active{% endif %}" href="{% url 'blog_home'%}">Home</a>
+                <a class="blog-nav-item {% if category == 'RVW' %}active{% endif %}" href="{% url 'blog_home'%}?cat=RVW">Review</a>
                 <a class="blog-nav-item {% if category == 'MNG' %}active{% endif %}" href="{% url 'blog_home'%}?cat=MNG">Manga</a>
                 <a class="blog-nav-item {% if category == 'PRG' %}active{% endif %}" href="{% url 'blog_home'%}?cat=PRG">Programming</a>
                 <a class="blog-nav-item {% if category == 'archive' %}active{% endif %}" href="{% url 'blog_archive' %}">Archives</a>
@@ -66,14 +67,23 @@
                 <div class="blog-post">
                     {% block content %}
                     {% for post in posts %}
-                    <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
-                    <i> Created on {{ post.created_on }}</i><br/>
-                    {{ post.content|safe|more }}
-                    {% if post.content|safe|more|length != post.content|safe|length %}
-                    . . .<br/>
-                    <a href="{{ post.get_absolute_url }}">>> Read more <<</a>
-                    {% endif %}
-                    <br/><br/>{{ post.comment_set.all|length }} comment{{ post.comment_set.all|pluralize }}
+                    <div>
+                        <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+                        <i> Created on {{ post.created_on }}</i><br/>
+                        <div style="font-size:0.7em;">Tags:
+                            {% for tag in post.tags.all %}
+                                <a href="{{ tag.get_absolute_url }}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                            {% empty %}
+                                No Tag
+                            {% endfor %}
+                        </div>
+                        {{ post.content|safe|more }}
+                        {% if post.content|safe|more|length != post.content|safe|length %}
+                        . . .<br/>
+                        <a href="{{ post.get_absolute_url }}">>> Read more <<</a>
+                        {% endif %}
+                        <br/><br/>{{ post.comment_set.all|length }} comment{{ post.comment_set.all|pluralize }}
+                    </div>
                     <hr/>
                     {% empty %}
                     <h1 align="center">No Content Available.</h1>

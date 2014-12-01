@@ -26,9 +26,9 @@ def home(request):
 
 def entry(request,year,month,day,slug):
     post = get_object_or_404(Entry,
-                               created_on__year=year,
-                               created_on__month=month,
-                               created_on__day=day,
+                               publish_date__year=year,
+                               publish_date__month=month,
+                               publish_date__day=day,
                                slug=slug)
     form = CommentForm(request.POST or None)
     if form.is_valid():
@@ -51,12 +51,27 @@ def archive(request):
     date_format = '%Y %B'
     dates = {}
     for post in posts:
-        d = format(post.updated_on, date_format)
+        d = format(post.publish_date, date_format)
         if not dates.has_key(d):
             dates[d] = [post]
         else:
             dates[d].append(post)
     return render(request, 'blog/archive.html', {'dates': dates, 'category':category})
+
+def tag(request,slug):
+    post_list = Entry.published.filter(tags__slug=slug)
+    paginator = Paginator(post_list,3)
+
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        posts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        posts = paginator.page(paginator.num_pages)
+    return render(request, 'blog/base.html', {'posts':posts})
 
 def handle_uploaded_file(f):
     path = 'blog/uploads/' + str(f)
