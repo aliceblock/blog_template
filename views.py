@@ -49,14 +49,21 @@ def archive(request):
     category = 'archive'
     posts = Entry.published.all()
     date_format = '%Y %B'
+    list_date = []
     dates = {}
     for post in posts:
         d = format(post.publish_date, date_format)
+        list_date.append(d)
         if not dates.has_key(d):
             dates[d] = [post]
         else:
             dates[d].append(post)
-    return render(request, 'blog/archive.html', {'dates': dates, 'category':category})
+    list_date = unique(list_date)
+    return render(request, 'blog/archive.html', {'list_date': list_date, 'dates': dates, 'category':category})
+
+def unique(seq):
+    seen = set()
+    return [seen.add(x) or x for x in seq if x not in seen]
 
 def tag(request,slug):
     post_list = Entry.published.filter(tags__slug=slug)

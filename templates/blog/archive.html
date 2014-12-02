@@ -5,12 +5,26 @@
 {% block content %}
 <h2>Archive</h2>
 <hr/>
-{% for date in dates %}
-    <h4 style="color:red">{{ date }}</h4>
-    <ul>
+{% for date in list_date %}
+    <h4 id="clickme{{ forloop.counter }}" style="color:red">{{ date }}</h4>
+    <ul {% ifnotequal forloop.counter 1 %} class="get_toggle" {% endifnotequal %} id="toggle{{ forloop.counter }}">
     {% for post in dates|access:date %}
     <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
     {% endfor %}
     </ul>
 {% endfor %}
+{% endblock %}
+{% block extra_footer %}
+<script>
+$(document).ready(function() {
+    var par = $('.get_toggle');
+    $(par).hide();
+    {% for date in list_date %}
+        $( "#clickme{{ forloop.counter }}" ).click(function(e) {
+            $( "#toggle{{ forloop.counter }}" ).slideToggle();
+            e.preventDefault();
+        });
+    {% endfor %}
+});
+</script>
 {% endblock %}
