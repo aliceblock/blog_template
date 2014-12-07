@@ -19,10 +19,8 @@ class Tag(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        if not self.id:
-            # Newly created object, so set slug
-            if not self.slug:
-                self.slug = slugify(unidecode(unicode(self.name)))
+        if not self.id and not self.slug:
+            self.slug = slugify(unidecode(unicode(self.name)))
         super(Tag, self).save(*args, **kwargs)
 
 class Entry(models.Model):
@@ -86,8 +84,7 @@ class Entry(models.Model):
             return False
 
     def save(self, *args, **kwargs):
-        if not self.id:
-            # Newly created object, so set slug
+        if not self.id and not self.slug:
             self.slug = slugify(unidecode(unicode(self.title)))
         super(Entry, self).save(*args, **kwargs)
 
