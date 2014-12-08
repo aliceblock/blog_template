@@ -2,14 +2,22 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from datetime import datetime
 from unidecode import unidecode
+import string
+import re
 
 class PublishedEntryManager(models.Manager):
     def get_queryset(self):
         return super(PublishedEntryManager, self).get_queryset().filter(publish_date__lte=datetime.now())
 
+def to_slug(text):
+    text = re.sub(r'\s+',' ',text)
+    for rep in string.whitespace:
+        text = text.replace(rep,'-')
+    return text
+
 class Tag(models.Model):
     name = models.CharField(max_length=50)
-    slug = models.SlugField(unique=True,blank=True)
+    slug = models.CharField(unique=True, blank=True, max_length=128)
 
     @models.permalink
     def get_absolute_url(self):
@@ -20,7 +28,8 @@ class Tag(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id and not self.slug:
-            self.slug = slugify(unidecode(unicode(self.name)))
+            # self.slug = slugify(unidecode(unicode(self.title)))       # Suppport only English and numbers
+            self.slug = to_slug(self.name)                             # Suppport other language (Unicode)
         super(Tag, self).save(*args, **kwargs)
 
 class Entry(models.Model):
@@ -37,7 +46,7 @@ class Entry(models.Model):
 
     title = models.CharField(max_length=200)
     content = models.TextField()
-    slug = models.SlugField(unique=True)
+    slug = models.CharField(unique=True, blank=True, max_length=128)
     category = models.CharField(max_length=3,
                             choices=CATEGORIES,
                             default=DAILY)
@@ -85,7 +94,8 @@ class Entry(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id and not self.slug:
-            self.slug = slugify(unidecode(unicode(self.title)))
+            # self.slug = slugify(unidecode(unicode(self.title)))       # Suppport only English and numbers
+            self.slug = to_slug(self.title)                             # Suppport other language (Unicode)
         super(Entry, self).save(*args, **kwargs)
 
 class Comment(models.Model):
