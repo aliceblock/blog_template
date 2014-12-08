@@ -5,7 +5,7 @@ from blog.models import Entry
 
 info_dict = {
     'queryset': Entry.published.all(),
-    'date_field': 'publish_date',
+    'date_field': 'updated_on',
 }
 
 sitemaps = {
