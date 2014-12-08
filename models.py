@@ -1,7 +1,6 @@
+from django.contrib.sitemaps import ping_google
 from django.db import models
-from django.template.defaultfilters import slugify
 from datetime import datetime
-from unidecode import unidecode
 import string
 import re
 
@@ -31,6 +30,12 @@ class Tag(models.Model):
             # self.slug = slugify(unidecode(unicode(self.title)))       # Suppport only English and numbers
             self.slug = to_slug(self.name)                             # Suppport other language (Unicode)
         super(Tag, self).save(*args, **kwargs)
+        try:
+            ping_google('/blog/sitemap.xml')
+        except Exception:
+            # Bare 'except' because we could get a variety
+            # of HTTP-related exceptions.
+            pass
 
 class Entry(models.Model):
     MANGA = 'MNG'
@@ -97,6 +102,12 @@ class Entry(models.Model):
             # self.slug = slugify(unidecode(unicode(self.title)))       # Suppport only English and numbers
             self.slug = to_slug(self.title)                             # Suppport other language (Unicode)
         super(Entry, self).save(*args, **kwargs)
+        try:
+            ping_google('/blog/sitemap.xml')
+        except Exception:
+            # Bare 'except' because we could get a variety
+            # of HTTP-related exceptions.
+            pass
 
 # from django.db.models.signals import pre_save
 # from signals import create_redirect
