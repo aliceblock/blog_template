@@ -10,6 +10,7 @@ TIME_ZONE = 'Asia/Bangkok'
 USE_TZ = False
 ```
 Or https://docs.djangoproject.com/en/1.7/topics/i18n/ for more timezone.
+
 ====================================================
 -- Add Staticfiles Management by Apache2 or Nginx --
 [settings.py]
