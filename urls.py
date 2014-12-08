@@ -1,15 +1,20 @@
 from django.conf.urls import url, patterns
 from django.contrib.sitemaps import GenericSitemap
 from django.contrib.sitemaps.views import sitemap
-from blog.models import Entry
+from blog.models import Entry, Tag
 
-info_dict = {
+tag_info = {
+    'queryset': Tag.objects.all(),
+}
+
+blog_info = {
     'queryset': Entry.published.all(),
     'date_field': 'updated_on',
 }
 
 sitemaps = {
-    'blog': GenericSitemap(info_dict, priority=0.5),
+    'tag': GenericSitemap(tag_info, priority=0.5),
+    'blog': GenericSitemap(blog_info, priority=0.5),
 }
 
 urlpatterns = patterns('',

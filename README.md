@@ -99,3 +99,30 @@ from signals import create_redirect
 pre_save.connect(create_redirect, sender=Entry, dispatch_uid="001")
 ```
 ** Now your site auto-generate redirecting
+
+```
+Add to INSTALLED_APPS
+'django.contrib.sitemaps'
+```
+[urls.py]
+```python
+from django.conf.urls import patterns, url
+from django.contrib.sitemaps import GenericSitemap
+from django.contrib.sitemaps.views import sitemap
+from blog.models import Entry
+
+info_dict = {
+    'queryset': Entry.published.all(),
+    'date_field': 'updated_on',
+}
+
+sitemaps = {
+    'blog': GenericSitemap(info_dict, priority=0.5),
+}
+
+urlpatterns += patterns('django.contrib.sitemaps.views',
+    url(r'^sitemap\.xml$', 'index', {'sitemaps': sitemaps}),
+    url(r'^sitemap-(?P<section>.+)\.xml$', 'sitemap', {'sitemaps': sitemaps}),
+)
+```
+** Now your site has sitemap.xml
