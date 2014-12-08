@@ -2,7 +2,26 @@ blog_template
 =============
 
 Blog template with Twitter Bootstrap
+====================================================
+-- Use optional timezone --
+[settings.py]
+```python
+TIME_ZONE = 'Asia/Bangkok'
+USE_TZ = False
+```
+Or https://docs.djangoproject.com/en/1.7/topics/i18n/ for more timezone.
+====================================================
+-- Add Staticfiles Management by Apache2 or Nginx --
+[settings.py]
+```python
+DEBUG = True
+TEMPLATE_DEBUG = True
+ALLOWED_HOSTS = ['example.com','example2.com']
 
+STATIC_ROOT = '<Where to place your staticfiles in your server>'
+STATIC_URL = '<Url link where you want to show Ex. example.com/static/ or static.example.com>'
+```
+=====================================
 -- SEO(Search Engine Optimization) --
 ```
 Add to INSTALLED_APPS
@@ -76,5 +95,3 @@ from django.db.models.signals import pre_save
 from signals import create_redirect
 pre_save.connect(create_redirect, sender=Entry, dispatch_uid="001")
 ```
-
-=========================================
