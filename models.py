@@ -98,9 +98,9 @@ class Entry(models.Model):
             self.slug = to_slug(self.title)                             # Suppport other language (Unicode)
         super(Entry, self).save(*args, **kwargs)
 
-# from django.db.models.signals import pre_save
-# from signals import create_redirect
-# pre_save.connect(create_redirect, sender=Entry, dispatch_uid="001")
+from django.db.models.signals import pre_save
+from signals import create_redirect
+pre_save.connect(create_redirect, sender=Entry, dispatch_uid="001")
 
 class Comment(models.Model):
     name = models.CharField(max_length=42)
