@@ -31,7 +31,8 @@ class Tag(models.Model):
             self.slug = to_slug(self.name)                             # Suppport other language (Unicode)
         super(Tag, self).save(*args, **kwargs)
         try:
-            ping_google('/blog/sitemap.xml')
+            # ping_google('/blog/sitemap.xml')
+            pass
         except Exception:
             # Bare 'except' because we could get a variety
             # of HTTP-related exceptions.
@@ -103,7 +104,8 @@ class Entry(models.Model):
             self.slug = to_slug(self.title)                             # Suppport other language (Unicode)
         super(Entry, self).save(*args, **kwargs)
         try:
-            ping_google('/blog/sitemap.xml')
+            # ping_google('/blog/sitemap.xml')
+            pass
         except Exception:
             # Bare 'except' because we could get a variety
             # of HTTP-related exceptions.
