@@ -80,6 +80,9 @@ def tag(request,slug):
         posts = paginator.page(paginator.num_pages)
     return render(request, 'blog/base.html', {'posts':posts})
 
+def gg_site(request):
+    return render(request,'blog/googlee2904a69940f9c84.html')
+
 def handle_uploaded_file(f):
     path = 'blog/uploads/' + str(f)
     with open(path, 'wb+') as destination:
