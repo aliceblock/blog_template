@@ -3,7 +3,7 @@ from blog.models import Entry, Tag
 
 # Register your models here.
 class EntryAdmin(admin.ModelAdmin):
-    list_display = ('title','updated_on','is_published')
+    list_display = ('title','updated_on','comment_counter','is_published')
     #exclude = ('slug',)
 
 admin.site.register(Entry, EntryAdmin)

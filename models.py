@@ -85,6 +85,10 @@ class Entry(models.Model):
     is_published.boolean = True
     is_published.short_description = 'Published recently?'
 
+    def comment_counter(self):
+        return self.comment_set.count()
+    comment_counter.short_description = 'Comment Counter'
+
     def get_next_entry(self):
         try:
             return self.get_next_by_publish_date()
