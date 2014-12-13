@@ -1,0 +1,4 @@
+# robotstxt.org/
+
+User-agent: *
+Sitemap: http://alternative-alice.no-ip.info/sitemap.xml
