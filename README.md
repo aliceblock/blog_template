@@ -126,3 +126,14 @@ urlpatterns += patterns('django.contrib.sitemaps.views',
 )
 ```
 ** Now your site has sitemap.xml
+
+[settings.py]
+```python
+TEMPLATE_LOADERS = (
+    ('django.template.loaders.cached.Loader', (
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    )),
+)
+```
+** Set cached template loaders
