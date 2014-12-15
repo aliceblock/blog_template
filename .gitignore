@@ -1,3 +1,5 @@
 /migrations/*
 *~
 *.pyc
+show_cam.html
+.gitignore

@@ -6,7 +6,7 @@
 <h2>Archive</h2>
 <hr/>
 {% for date in list_date %}
-    <h4 id="clickme{{ forloop.counter }}" style="color:red">{{ date }}</h4>
+    <h4 id="clickme{{ forloop.counter }}" style="color:red;cursor:pointer">{{ date }}</h4>
     <ul {% ifnotequal forloop.counter 1 %} class="get_toggle" {% endifnotequal %} id="toggle{{ forloop.counter }}">
     {% for post in dates|access:date %}
     <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
