@@ -40,8 +40,8 @@
 
     </script>
 </head>
-<body style="background-color: #6666FF">
-    <div class="blog-masthead hidden-xs">
+<body style="background-color: #6666FF;padding-top: 50px;">
+    <!--div class="blog-masthead hidden-xs">
         <div class="container">
             <nav class="blog-nav">
                 <a class="blog-nav-item {% if category == None %}active{% endif %}" href="{% url 'blog_home'%}">Home</a>
@@ -49,10 +49,57 @@
                 <a class="blog-nav-item {% if category == 'MNG' %}active{% endif %}" href="{% url 'blog_home'%}?cat=MNG">Manga</a>
                 <a class="blog-nav-item {% if category == 'PRG' %}active{% endif %}" href="{% url 'blog_home'%}?cat=PRG">Programming</a>
                 <a class="blog-nav-item {% if category == 'archive' %}active{% endif %}" href="{% url 'blog_archive' %}">Archives</a>
-                <!--a class="blog-nav-item {% if category == 'about' %}active{% endif %}" href="{% url 'blog_home'%}?cat=about">About</a-->
+                <!--a class="blog-nav-item {% if category == 'about' %}active{% endif %}" href="{% url 'blog_home'%}?cat=about">About</a>
             </nav>
         </div>
-    </div>
+    </div-->
+    <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapse-menu">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{% url 'blog_home'%}">
+                        <img alt="Brand" src="{% static 'icon/favicon.ico' %}" style="max-height:25px;width:auto;height:auto;">
+                    </a>
+                    <p class="navbar-text" style="font-size:1.1em"><b><a href="{% url 'blog_home'%}" style="text-decoration: none;color:white">Alternative Alice</a></b></p>
+                    <div class="nav navbar-nav">
+                        <div class="collapse navbar-collapse" id="collapse-menu">
+                            <ul class="nav navbar-nav">
+                                <li class="{% if category == None %}active{% endif %}" id="home">
+                                    <a href="{% url 'blog_home'%}">Home</a>
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav">
+                                <li class="{% if category == 'RVW' %}active{% endif %}" id="review">
+                                    <a href="{% url 'blog_home'%}?cat=RVW">Review</a>
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav">
+                                <li class="{% if category == 'MNG' %}active{% endif %}" id="manga">
+                                    <a href="{% url 'blog_home'%}?cat=MNG">Manga</a>
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav">
+                                <li class="{% if category == 'PRG' %}active{% endif %}" id="programming">
+                                    <a href="{% url 'blog_home'%}?cat=PRG">Programming</a>
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav">
+                                <li class="{% if category == 'archive' %}active{% endif %}" id="archive">
+                                    <a href="{% url 'blog_archive' %}">Archives</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
     <div class="container" style="background-color: white">
         <a href="{% url 'blog_home' %}" style="text-decoration: none;">
             <div class="blog-header" style="padding:0 30px 100px">
