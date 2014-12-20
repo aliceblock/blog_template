@@ -64,9 +64,9 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="{% url 'blog_home'%}">
-                        <img alt="Brand" src="{% static 'icon/favicon.ico' %}" style="max-height:25px;width:auto;height:auto;">
+                        <img class="nav-logo" alt="Brand" src="{% static 'icon/favicon.ico' %}">
                     </a>
-                    <p class="navbar-text" style="font-size:1.1em"><b><a href="{% url 'blog_home'%}" style="text-decoration: none;color:white">Alternative Alice</a></b></p>
+                    <p class="navbar-text nav-name"><b><a href="{% url 'blog_home'%}">Alternative Alice</a></b></p>
                     <div class="nav navbar-nav">
                         <div class="collapse navbar-collapse" id="collapse-menu">
                             <ul class="nav navbar-nav">
@@ -100,11 +100,11 @@
             </div>
         </div>
     </nav>
-    <div class="container" style="background-color: white">
-        <a href="{% url 'blog_home' %}" style="text-decoration: none;">
-            <div class="blog-header" style="padding:0 30px 100px">
+    <div class="container">
+        <a href="{% url 'blog_home' %}">
+            <div class="blog-header">
                 <h1 class="blog-title">Alternative Alice</h1>
-                <p class="lead blog-description">Next Generation Manga Reading.</p>
+                <p class="lead blog-description header-link">Next Generation Manga Reading.</p>
             </div>
         </a>
         <div class="row">
@@ -116,7 +116,7 @@
                         <li>Programming trick</li>
                     </ul>
                 </div>
-                <div class="sidebar-module" style="margin:5px">
+                <div class="sidebar-module">
                     <h4>Links</h4>
                     <ol class="list-unstyled">
                         <li><a href="http://alternative-alice.blogspot.com">Alternative-alice (Blogspot)</a></li>
@@ -131,9 +131,9 @@
                     <div>
                         <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
                         <i> Created on {{ post.created_on }}</i><br/>
-                        <div style="font-size:0.7em;">Tags:
+                        <div class="blog-post-tag">Tags:
                             {% for tag in post.tags.all %}
-                                <a href="{{ tag.get_absolute_url }}" class="label label-info" style="font-size:1em">{{ tag.name }}</a>
+                                <a href="{{ tag.get_absolute_url }}" class="label label-info">{{ tag.name }}</a>
                             {% empty %}
                                 No Tag
                             {% endfor %}
@@ -151,11 +151,11 @@
                     <h1 align="center">No Content Available.</h1>
                     {% endfor %}
                     {% if posts %}
-                    <div class="pagination" style="display:table; margin:0 auto">
+                    <div class="pagination">
                         <span class="step-links">
                             {% if posts.has_previous %}
                                 <a href="?{% if category != None %}cat={{ category }}&{% endif %}page={{ posts.previous_page_number }}"
-                                        class="btn btn-default" style="margin-right:10px">previous</a>
+                                        class="btn btn-default pre-page">previous</a>
                             {% endif %}
 
                             <span class="current">
@@ -164,7 +164,7 @@
 
                             {% if posts.has_next %}
                                 <a href="?{% if category != None %}cat={{ category }}&{% endif %}page={{ posts.next_page_number }}"
-                                        class="btn btn-default" style="margin-left:10px">next</a>
+                                        class="btn btn-default next-page">next</a>
                             {% endif %}
                         </span>
                     </div>
