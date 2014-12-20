@@ -178,3 +178,7 @@ img {
   background-color: #BBFFFF;
   border-radius: 8px;
 }
+
+.navbar{
+  min-height:20px; //* or whatever height you require
+}
