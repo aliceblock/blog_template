@@ -30,6 +30,10 @@ def entry(request,year,month,day,slug):
                                publish_date__month=month,
                                publish_date__day=day,
                                slug=slug)
+    if not request.user:
+        post.view += 1
+        post.save(update_fields=["view"])
+
     form = CommentForm(request.POST or None)
     if form.is_valid():
         comment = form.save(commit=False)

@@ -56,6 +56,7 @@ class Entry(models.Model):
                             choices=CATEGORIES,
                             default=DAILY)
     tags = models.ManyToManyField(Tag)
+    view = models.IntegerField(editable=False, default=0)
     publish_date = models.DateTimeField(verbose_name='date published')
     created_on = models.DateTimeField(auto_now_add=True, verbose_name='created on')
     updated_on = models.DateTimeField(auto_now=True, verbose_name='last updated')
