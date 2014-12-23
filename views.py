@@ -30,7 +30,7 @@ def entry(request,year,month,day,slug):
                                publish_date__month=month,
                                publish_date__day=day,
                                slug=slug)
-    if not request.user:
+    if request.user.is_anonymous():
         post.view += 1
         post.save(update_fields=["view"])
 
